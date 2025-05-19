@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js File Uploader</title>
+
+ 
+    <style>
+
+      
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5rem;
+            background-color: whitesmoke;
+            color: rgb(14, 1, 1);
+        }
+
+        input,
+        button {
+            font: inherit;
+            width: max-content;
+        }
+
+        form {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1.5rem;
+        }
+      
+
+
+
+
+    /*-------------------------------Plant Input File Headings Section---------------------------------------*/
+    .plant-input-text {
+    font-size: 20px;
+  }
+  /*-------------------------------Plant Input File Headings Section---------------------------------------*/
+
+    /*-----------Dow logo--------*/
+    .logo-icon {
+    margin-left: 40%; 
+  
+  }
+  /*-----------Dow logo--------*/
+
+  
+
+
+
+    </style>
+</head>
+
+
+
+
+<body>
+
+
+
+    <h1>Plant Input File</h1>
+    <form id="uploadForm">
+        <input type="file" id="myFiles" accept=".xlsx, .xlsm, .xlss" multiple />
+        <button>Submit</button>
+    </form>
+    <h2></h2>
+    <h3></h3>
+
+    <!-------------------------------Plant Input File Headings Section--------------------------------------->
+      
+    <p class = "text-before-excel">You should load a set of model parameters prior to uploading the plant information; otherwise you will receive an error. 
+       
+      <br>This is ok, just be sure to load a set of model parameters before calculating the projection.
+
+      <br>For plant-specific changes to the model (i.e., change baseline bed temperature), proceed to Baseline Conditions.
+       </p> 
+
+       
+       <p>To upload plant inputs from an Excel file*:</p>
+
+       
+       <pre class = "plant-input-text">
+         1. Save the file with the required information on your computer.
+         2. Click the "Add" button above and a local file browser will appear.
+         3. Select the desired plant input file.
+         4. Click "Start" to upload the plant inputs in the file. ("Start" replaces "Add" after a file is selected.)
+         5. If the upload is successful, the "Uploaded Plant Input File" box will match the filename you wanted to upload.
+         6. Continue to Calculate Projection to calculate the projection and view results.
+       </pre>
+
+       <p>Plant parameters can be viewed in the underlying pages of "Plant Inputs". While parameters can be altered on these sub-pages, non-expert users are recommended to change any inputs in the Excel file and reload the file.</p>
+
+       <!-------------------------------Plant Input File Headings Section--------------------------------------->
+
+      
+     
+    <script>
+        const form = document.getElementById('uploadForm')
+
+        const sendFiles = async () => {
+            // Object 
+            const myFiles = document.getElementById('myFiles').files
+
+            const formData = new FormData()
+
+            Object.keys(myFiles).forEach(key => {
+                formData.append(myFiles.item(key).name, myFiles.item(key))
+            })
+
+            const response = await fetch('http://localhost:5500/upload', {
+                method: 'POST',
+                body: formData
+            })
+
+            const json = await response.json()
+
+            const h2 = document.querySelector('h2')
+            h2.textContent = `Status: ${json?.status}`
+
+            const h3 = document.querySelector('h3')
+            h3.textContent = json?.message
+
+            console.log(json)
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            sendFiles()
+        })
+
+
+   
+    </script>
+</body>
+
+</html>
