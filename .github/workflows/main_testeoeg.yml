@@ -61,4 +61,4 @@ jobs:
           app-name: 'testEOEG'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FA1DB77736C84127A53D3731B5D6A89F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6880BB62E50540F58F4E8B2B87C049FC }}
